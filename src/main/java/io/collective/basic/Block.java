@@ -4,17 +4,21 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * A Block entity within a blockchain
+ */
 public class Block {
-    private String previousHash;
-    private long timestamp;
-    private int nonce;
-    private String hash;
+    private final String previousHash;
+    private final long timestamp;
+    private final int nonce;
+    private final String hash;
+    public static final String STARTING_PREVIOUS_HASH = "0";
 
     public Block(String previousHash, long timestamp, int nonce) throws NoSuchAlgorithmException {
         this.previousHash = previousHash;
         this.timestamp = timestamp;
         this.nonce = nonce;
-        this.hash = null;
+        this.hash = calculatedHash();
     }
 
     public String getPreviousHash() {
@@ -34,11 +38,18 @@ public class Block {
     }
 
     public String calculatedHash() throws NoSuchAlgorithmException {
-        return null;
+        return calculateHash(previousHash+timestamp+nonce);
     }
 
-    /// Supporting functions that you'll need.
+    /// Supporting functions
 
+    /**
+     * Calculate the SHA-256 hash of input string
+     * @param string to SHA-256 hash
+     * @return SHA-256 hashed value of string
+     * @throws NoSuchAlgorithmException when a particular cryptographic algorithm is requested but is not available in
+     * the environment.
+     */
     static String calculateHash(String string) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         digest.update(string.getBytes());

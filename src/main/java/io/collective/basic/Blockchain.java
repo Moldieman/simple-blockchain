@@ -1,33 +1,71 @@
 package io.collective.basic;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
+/**
+ * Implement a BlockChain
+ */
 public class Blockchain {
+    private final ArrayList<Block> blocks;
 
+
+    /**
+     * Initialize the list of blocks
+     */
+    public Blockchain() {
+        blocks = new ArrayList<>();
+    }
+
+    /**
+     * Validate if the blockchain isEmpty
+     */
     public boolean isEmpty() {
-        return false;
+        return blocks.isEmpty();
     }
 
+    /**
+     * Add block to the chain
+     */
     public void add(Block block) {
+        blocks.add(block);
     }
 
+    /**
+     * Block size
+     */
     public int size() {
-        return 0;
+        return blocks.size();
     }
 
+    /**
+     * Validatding of the Block
+     */
     public boolean isValid() throws NoSuchAlgorithmException {
 
-        // todo - check an empty chain
+        // Check an empty chain
+        if (blocks.isEmpty()) return true;
 
-        // todo - check a chain of one
+        // Check a chain of one
+        String previousHash = blocks.get(0).getPreviousHash();
+        if (!previousHash.equals(Block.STARTING_PREVIOUS_HASH))
+            return false;
 
-        // todo - check a chain of many
+        // Check a chain of many
 
-        return false;
+        for (Block block : blocks) {
+            if (!isMined(block) || !block.getHash().equals(block.calculatedHash())
+                    || !block.getPreviousHash().equals(previousHash))
+                return false;
+            previousHash = block.getHash();
+        }
+
+        return true;
     }
 
-    /// Supporting functions that you'll need.
-
+    /**
+     * Mine the block
+     */
     public static Block mine(Block block) throws NoSuchAlgorithmException {
         Block mined = new Block(block.getPreviousHash(), block.getTimestamp(), block.getNonce());
 
@@ -37,6 +75,9 @@ public class Blockchain {
         return mined;
     }
 
+    /**
+     * If the block was mined
+     */
     public static boolean isMined(Block minedBlock) {
         return minedBlock.getHash().startsWith("00");
     }
