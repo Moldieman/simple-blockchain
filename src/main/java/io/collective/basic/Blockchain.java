@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Blockchain {
     private final ArrayList<Block> blocks;
 
-
     /**
      * Initialize the list of blocks
      */
@@ -39,12 +38,13 @@ public class Blockchain {
     }
 
     /**
-     * Validatding of the Block
+     * Validate the Block
      */
     public boolean isValid() throws NoSuchAlgorithmException {
 
         // Check an empty chain
-        if (blocks.isEmpty()) return true;
+        if (blocks.isEmpty())
+            return true;
 
         // Check a chain of one
         String previousHash = blocks.get(0).getPreviousHash();
@@ -52,7 +52,6 @@ public class Blockchain {
             return false;
 
         // Check a chain of many
-
         for (Block block : blocks) {
             if (!isMined(block) || !block.getHash().equals(block.calculatedHash())
                     || !block.getPreviousHash().equals(previousHash))

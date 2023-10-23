@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * A Block entity within a blockchain
+ * A Block entity
  */
 public class Block {
     private final String previousHash;
@@ -38,18 +38,9 @@ public class Block {
     }
 
     public String calculatedHash() throws NoSuchAlgorithmException {
-        return calculateHash(previousHash+timestamp+nonce);
+        return calculateHash(previousHash + timestamp + nonce);
     }
 
-    /// Supporting functions
-
-    /**
-     * Calculate the SHA-256 hash of input string
-     * @param string to SHA-256 hash
-     * @return SHA-256 hashed value of string
-     * @throws NoSuchAlgorithmException when a particular cryptographic algorithm is requested but is not available in
-     * the environment.
-     */
     static String calculateHash(String string) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         digest.update(string.getBytes());
